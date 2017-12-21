@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+/*
+!.gitignore
+!php-fpm
+!nginx
+!mysql
+!logs
+!docker-compose.yml
+!php-fpm5
+!php-fpm7

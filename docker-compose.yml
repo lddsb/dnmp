@@ -1,0 +1,81 @@
+version: '2'
+services:
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        - PHP_UPSTREAM_CONTAINER=php-fpm
+        - PHP_UPSTREAM_PORT=9000
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - ../:/var/www/html/:rw
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf/vhost/:/etc/nginx/sites/:ro
+      - ./logs/nginx/:/var/log/nginx/:rw
+    links:
+      - php-fpm:php-fpm
+      - php-fpm5:php-fpm5
+
+  php-fpm:
+    build:
+      context: ./php-fpm
+    ports:
+      - "9000:9000"
+    restart: always
+    volumes:
+      - ../:/var/www/html/:rw
+      - ./php-fpm/conf/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./logs/php-fpm/:/var/log/php-fpm/:rw
+    links:
+      - mysql:mysql
+      - redis:redis
+
+  php-fpm5:
+    build:
+      context: ./php-fpm5
+    ports:
+      - "9005:9000"
+    restart: always
+    volumes:
+      - ../:/var/www/html/:rw
+      - ./php-fpm5/conf/php.ini:/usr/local/etc/php5/php.ini:ro
+      - ./logs/php-fpm5/:/var/log/php-fpm5/:rw
+    links:
+      - mysql:mysql
+      - redis:redis
+
+  php-fpm7:
+    build:
+      context: ./php-fpm7
+    ports:
+      - "9007:9000"
+    restart: always
+    volumes:
+      - ../:/var/www/html/:rw
+      - ./php-fpm7/conf/php.ini:/usr/local/etc/php7/php.ini:ro
+      - ./logs/php-fpm5/:/var/log/php-fpm7/:rw
+    links:
+      - mysql:mysql
+      - redis:redis
+
+  mysql:
+    build:
+      context: ./mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./mysql/conf/my.cnf:/etc/mysql/my.cnf:ro
+      - ./mysql/data/:/var/lib/mysql/:rw
+      - ./logs/mysql/:/var/log/mysql/:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
