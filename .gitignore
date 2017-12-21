@@ -8,3 +8,4 @@
 !docker-compose.yml
 !php-fpm5
 !php-fpm7
+!README.md
