@@ -3,9 +3,6 @@ services:
   nginx:
     build:
       context: ./nginx
-      args:
-        - PHP_UPSTREAM_CONTAINER=php-fpm
-        - PHP_UPSTREAM_PORT=9000
     ports:
       - "80:80"
       - "443:443"
@@ -16,22 +13,8 @@ services:
       - ./nginx/conf/vhost/:/etc/nginx/sites/:ro
       - ./logs/nginx/:/var/log/nginx/:rw
     links:
-      - php-fpm:php-fpm
+      - php-fpm7:php-fpm7
       - php-fpm5:php-fpm5
-
-  php-fpm:
-    build:
-      context: ./php-fpm
-    ports:
-      - "9000:9000"
-    restart: always
-    volumes:
-      - ../:/var/www/html/:rw
-      - ./php-fpm/conf/php.ini:/usr/local/etc/php/php.ini:ro
-      - ./logs/php-fpm/:/var/log/php-fpm/:rw
-    links:
-      - mysql:mysql
-      - redis:redis
 
   php-fpm5:
     build:
@@ -41,7 +24,6 @@ services:
     restart: always
     volumes:
       - ../:/var/www/html/:rw
-      - ./php-fpm5/conf/php.ini:/usr/local/etc/php5/php.ini:ro
       - ./logs/php-fpm5/:/var/log/php-fpm5/:rw
     links:
       - mysql:mysql
@@ -55,8 +37,7 @@ services:
     restart: always
     volumes:
       - ../:/var/www/html/:rw
-      - ./php-fpm7/conf/php.ini:/usr/local/etc/php7/php.ini:ro
-      - ./logs/php-fpm5/:/var/log/php-fpm7/:rw
+      - ./logs/php-fpm7/:/var/log/php-fpm7/:rw
     links:
       - mysql:mysql
       - redis:redis
