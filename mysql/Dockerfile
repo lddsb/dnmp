@@ -3,8 +3,9 @@ FROM mysql:latest
 MAINTAINER Luo Di <luodi0128@gmail.com>
 
 # set timezone to China
-RUN echo "Asia/Shanghai" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+ENV TIMEZONE Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN echo $TIMEZONE > /etc/timezone
 
 # set path permissions
 RUN chown -R mysql:root /var/lib/mysql
