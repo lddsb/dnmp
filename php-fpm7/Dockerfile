@@ -1,4 +1,4 @@
-FROM php:7.1.12-fpm-alpine
+FROM php:7.1-fpm-alpine
 MAINTAINER Luo Di luodi0128@gmail.com
 
 # replace Chinese mirror
