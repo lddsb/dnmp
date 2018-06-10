@@ -15,6 +15,9 @@ services:
     links:
       - php-fpm7:php-fpm7
       - php-fpm5:php-fpm5
+    environment:
+      SET_CONTAINER_TIMEZONE: "TRUE"
+      CONTAINER_TIMEZONE: "Asia/Shanghai"
 
   php-fpm5:
     build:
@@ -28,6 +31,9 @@ services:
     links:
       - mysql:mysql
       - redis:redis
+    environment:
+      SET_CONTAINER_TIMEZONE: "TRUE"
+      CONTAINER_TIMEZONE: "Asia/Shanghai"
 
   php-fpm7:
     build:
@@ -41,6 +47,9 @@ services:
     links:
       - mysql:mysql
       - redis:redis
+    environment:
+      SET_CONTAINER_TIMEZONE: "TRUE"
+      CONTAINER_TIMEZONE: "Asia/Shanghai"
 
   mysql:
     build:
@@ -48,12 +57,14 @@ services:
     ports:
       - "3306:3306"
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      SET_CONTAINER_TIMEZONE: "TRUE"
+      CONTAINER_TIMEZONE: "Asia/Shanghai"
     volumes:
       - ./mysql/conf/my.cnf:/etc/mysql/my.cnf:ro
       - ./mysql/data/:/var/lib/mysql/:rw
       - ./logs/mysql/:/var/log/mysql/:rw
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
 
   redis:
     image: redis:latest

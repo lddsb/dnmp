@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql:5.7
 
 MAINTAINER Luo Di <luodi0128@gmail.com>
 
@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 RUN echo $TIMEZONE > /etc/timezone
 
 # set path permissions
-RUN chown -R mysql:root /var/lib/mysql
+RUN chown -R mysql:mysql /var/lib/mysql/
 
 # copy my.cnf into the MySQL container
 ADD ./conf/my.cnf /etc/mysql/conf.d/my.cnf
