@@ -6,7 +6,7 @@
 !mysql
 !logs
 !docker-compose.yml
-!php-fpm5
-!php-fpm7
+!php5
+!php7
 !README.md
 !.env.example
