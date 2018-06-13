@@ -2,4 +2,4 @@
 /*
 !.gitignore
 !nginx.conf
-!vhost
+!sites

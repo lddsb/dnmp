@@ -9,3 +9,4 @@
 !php-fpm5
 !php-fpm7
 !README.md
+!.env.example

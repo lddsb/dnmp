@@ -1,52 +1,50 @@
-version: '2'
+version: '3'
 services:
   nginx:
     build:
       context: ./nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
     restart: always
     volumes:
-      - ../:/var/www/html/:rw
+      - ${WEB_ROOT}:/var/www/html/:rw
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf/vhost/:/etc/nginx/sites/:ro
+      - ./nginx/conf/sites/:/etc/nginx/sites/:ro
       - ./logs/nginx/:/var/log/nginx/:rw
     links:
-      - php-fpm7:php-fpm7
-      - php-fpm5:php-fpm5
+      - php7:php7
+      - php5:php5
     environment:
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"
 
-  php-fpm5:
+  php5:
     build:
-      context: ./php-fpm5
+      context: ./php5
     ports:
-      - "9005:9000"
+      - "${PHP_FPM_5_PORT}:9000"
     restart: always
-    volumes:
-      - ../:/var/www/html/:rw
-      - ./logs/php-fpm5/:/var/log/php-fpm5/:rw
     links:
       - mysql:mysql
       - redis:redis
+    volumes:
+      - ${WEB_ROOT}:/var/www/html/:rw
     environment:
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"
 
-  php-fpm7:
+  php7:
     build:
-      context: ./php-fpm7
+      context: ./php7
     ports:
-      - "9007:9000"
+      - "${PHP_FPM_PORT}:9000"
     restart: always
-    volumes:
-      - ../:/var/www/html/:rw
-      - ./logs/php-fpm7/:/var/log/php-fpm7/:rw
     links:
       - mysql:mysql
       - redis:redis
+    volumes:
+      - ${WEB_ROOT}:/var/www/html/:rw
     environment:
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"
@@ -55,19 +53,18 @@ services:
     build:
       context: ./mysql
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:3306"
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"
     volumes:
       - ./mysql/conf/my.cnf:/etc/mysql/my.cnf:ro
-      - ./mysql/data/:/var/lib/mysql/:rw
-      - ./logs/mysql/:/var/log/mysql/:rw
+      - ${DATA_PATH}:/var/lib/mysql/:rw
 
   redis:
     image: redis:latest
     restart: always
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
