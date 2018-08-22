@@ -4,3 +4,4 @@
 !Dockerfile
 !conf
 !.dockerignore
+!data

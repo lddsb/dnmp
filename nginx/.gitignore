@@ -3,4 +3,4 @@
 !.gitignore
 !Dockerfile
 !conf
-!source.list
+!logs
