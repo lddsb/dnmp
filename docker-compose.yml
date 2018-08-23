@@ -30,7 +30,7 @@ services:
       - redis:redis
     volumes:
       - ${WEB_ROOT}:/var/www/html/:rw
-      - ./php7/logs/errors.log:/var/log/php_errors.log:rw
+      - ./php7/logs:/var/log/php:rw
     environment:
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"

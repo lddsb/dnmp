@@ -29,7 +29,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 #RUN chmod +x /usr/bin/composer \
 #    && composer config -g repo.packagist composer https://packagist.phpcomposer.com \
 #    && composer self-update
-
+RUN apk --no-cache add shadow && usermod -u 1000 www-data
 # web dir
 WORKDIR /var/www/html
 
