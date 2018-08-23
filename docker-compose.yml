@@ -31,8 +31,8 @@ services:
     volumes:
       - ${WEB_ROOT}:/var/www/html/:rw
       - ./php7/logs:/var/log/php:rw
-    env_file: 
-      - ./php7/.env
+    extra_hosts:
+      - ${PHP_FPM_EXTRA_HOSTS}
     environment:
       SET_CONTAINER_TIMEZONE: "TRUE"
       CONTAINER_TIMEZONE: "Asia/Shanghai"
