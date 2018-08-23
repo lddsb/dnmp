@@ -4,3 +4,5 @@
 !Dockerfile
 !conf
 !composer.phar
+!logs
+!.env.example
