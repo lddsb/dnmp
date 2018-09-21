@@ -21,8 +21,9 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
         docker-php-ext-install -j${NPROC} gd zip && \
         apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 COPY ./conf/php.ini /usr/local/etc/php/php.ini
-#RUN sed -i 's/;date.timezone =/date.timezone = Asia\/Shanghai/' /usr/local/etc/php/php.ini
-
+RUN sed -i 's/;date.timezone =/date.timezone = Asia\/Shanghai/' /usr/local/etc/php/php.ini
+RUN apk add --no-cache tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ > /etc/localtime
 # install php composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 #COPY composer.phar /usr/bin/composer
