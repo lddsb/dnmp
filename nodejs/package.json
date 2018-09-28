@@ -1,0 +1,10 @@
+{
+	"name": "docker-node-hello-world",
+	"private": true,
+	"version": "0.0.1",
+	"description": "Node.js with Docker",
+	"author": "luodi0128@gmail.com",
+	"dependencies": {
+		"express": "^4.16.1"
+	}
+}

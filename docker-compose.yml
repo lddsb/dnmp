@@ -56,6 +56,12 @@ services:
       - webnet
     ports:
       - "${REDIS_PORT}:6379"
+  nodejs:
+    build:
+      context: ./nodejs
+    restart: always
+    volumes:
+      - webroot:/app
 networks:
   webnet:
 volumes:
