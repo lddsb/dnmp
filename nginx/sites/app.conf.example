@@ -27,7 +27,7 @@ server {
     }
 
     ## let's encrypt config
-    #include /etc/nginx/conf.d/letsencrypt.conf
+    #include /etc/nginx/configs/letsencrypt.conf
 
     error_log /var/log/nginx/app_error.log;
     access_log /var/log/nginx/app_access.log;

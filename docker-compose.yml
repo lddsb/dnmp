@@ -10,7 +10,7 @@ services:
     restart: always
     volumes:
       - webroot:/var/www/html
-      - ./nginx/configs/:/etc/nginx/conf.d/:ro
+      - ./nginx/configs/:/etc/nginx/configs/:ro
       - ./nginx/sites/:/etc/nginx/sites/:ro
       - ./nginx/logs/:/var/log/nginx/:rw
     networks:

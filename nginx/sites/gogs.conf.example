@@ -19,5 +19,5 @@ server {
 	}
 
 	## let's encrypt
-	#include /etc/nginx/conf.d/letsencrypt.conf;
+	#include /etc/nginx/configs/letsencrypt.conf;
 }
