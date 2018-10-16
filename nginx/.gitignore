@@ -2,5 +2,6 @@
 /*
 !.gitignore
 !Dockerfile
-!conf
+!configs
 !logs
+!sites

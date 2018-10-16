@@ -1,0 +1,23 @@
+upstream gogs {
+	server localhost:3000;
+	## if you use gogs with docker
+	# server gogs:3000;
+}
+
+server {
+	listen 80;
+	## ssl
+	#listen 443 ssl;
+	server_name your_domain_name.com;
+	## ssl cert
+	#ssl_certificate /path/to/your_domain_cert.pem;
+	## ssl key
+	#ssl_certificate_key /path/to/your_domain_key.pem;
+	location / {
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_pass http://gogs$request_uri;
+	}
+
+	## let's encrypt
+	#include /etc/nginx/conf.d/letsencrypt.conf;
+}

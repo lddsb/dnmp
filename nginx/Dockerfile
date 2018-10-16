@@ -7,7 +7,7 @@ MAINTAINER Luo Di <luodi0128@gmail.com>
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 # add the configuration file into container
-ADD ./conf/nginx.conf /etc/nginx/nginx.conf
+ADD ./nginx.conf /etc/nginx/nginx.conf
 
 ARG PHP_UPSTREAM_CONTAINER_7=php7
 ARG PHP_UPSTREAM_PORT=9000
