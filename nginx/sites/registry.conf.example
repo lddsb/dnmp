@@ -1,0 +1,35 @@
+upstream registry {
+	server registry:5000;
+}
+
+server {
+	listen 443 ssl;
+	server_name registry.your-domain.com;
+
+	ssl_certificate /path/to/your/domain/cert.pem;
+	ssl_certificate_key /path/to/your/domain/key.pem;
+
+	# HTTP 413
+	client_max_body_size 0;
+
+	location / {
+		auth_basic "Restricted";
+		auth_basic_user_file /path/to/your/htpasswd;
+
+		proxy_set_header Host $http_host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_pass http://registry;
+	}
+
+	## let's encrypt
+	#include /etc/nginx/configs/letsencrypt.conf;
+
+	#logs
+	error_log /var/log/nginx/registry_error.log;
+	access_log /var/log/nginx/registry_access.log;
+}
+
+server {
+	server_name registry.your-domain.com;
+	return 301 https://$host$request_uri;
+}

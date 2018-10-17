@@ -8,7 +8,7 @@ server {
 	listen 80;
 	## ssl
 	#listen 443 ssl;
-	server_name your_domain_name.com;
+	server_name gogs.your-domain.com;
 	## ssl cert
 	#ssl_certificate /path/to/your_domain_cert.pem;
 	## ssl key
@@ -20,4 +20,12 @@ server {
 
 	## let's encrypt
 	#include /etc/nginx/configs/letsencrypt.conf;
+
+	error_log /var/log/nginx/gogs_error.log;
+    access_log /var/log/nginx/gogs_access.log;
 }
+
+#server {
+#	server_name gogs.your-domain.com;
+#	return 301 https://$host$request_uri;
+#}

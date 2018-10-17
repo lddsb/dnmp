@@ -1,4 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 /*
 !.gitignore
-!letsencrypt.conf
+!*.conf.example

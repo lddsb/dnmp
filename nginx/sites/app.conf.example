@@ -6,21 +6,21 @@ server {
     server_name app.dev;
     root /var/www/html/app;
     index index.php index.html index.htm;
-    ## if you use php with framework like laravel
-    #location / {
-    #     try_files $uri $uri/ /index.php$is_args$args;
-    #}
+    # if you use php with framework like laravel
+    location / {
+         try_files $uri $uri/ /index.php$is_args$args;
+    }
 
-    ## if you need php
-    #location ~ \.php$ {
-    #    try_files $uri /index.php =404;
-    #    fastcgi_pass php7;
-    #    fastcgi_index index.php;
-    #    fastcgi_buffers 16 16k;
-    #    fastcgi_buffer_size 32k;
-    #    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    #    include fastcgi_params;
-    #}
+    # if you need php
+    location ~ \.php$ {
+        try_files $uri /index.php =404;
+        fastcgi_pass php7;
+        fastcgi_index index.php;
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
     location ~ /\.ht {
         deny all;

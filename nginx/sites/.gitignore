@@ -2,5 +2,4 @@
 /*
 !.gitignore
 !default.conf
-!app.conf.example
-!gogs.conf.example
+!*.conf.example

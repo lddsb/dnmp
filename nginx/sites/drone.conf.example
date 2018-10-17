@@ -1,0 +1,34 @@
+upstream drone {
+	server drone-server:8000;
+}
+
+server {
+	listen 80;
+	server_name drone.your-domain.com;
+	## ssl
+	#listen 443 ssl;
+	## ssl cert
+	#ssl_certificate /path/to/your/domain/cert.pem;
+	## ssl key
+	#ssl_certificate_key /path/to/your/domain/key.pem;
+
+	location / {
+		proxy_set_header X-Forwarded-For $remote_addr;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header Host $http_host;
+
+		proxy_pass http://drone;
+	}
+
+	## if you use let's encrypt
+	#include /etc/nginx/configs/letsencrypt.conf;
+
+	# logs
+	error_log /var/log/nginx/drone_error.log;
+	access_log /var/log/nginx/drone_access.log;
+}
+
+#server {
+#	server_name drone.your-domain.com;
+#	return 301 https://$host$request_uri;
+#}
