@@ -1,9 +1,19 @@
 FROM php:7.1-fpm-alpine
 MAINTAINER Luo Di luodi0128@gmail.com
 
-# replace Chinese mirror
-#COPY source.list /etc/apk/repositories
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+# replace mirror
+ARG CUSTOMIZE_MIRROR=dl-cdn.alpinelinux.org
+ENV CUSTOMIZE_MIRROR ${CUSTOMIZE_MIRROR}
+RUN if [ ${CUSTOMIZE_MIRROR} ]; then \
+    sed -i "s/dl-cdn.alpinelinux.org/${CUSTOMIZE_MIRROR}/g" /etc/apk/repositories \
+;fi
+# mirror http scheme
+ARG HTTPS_MIRROR=false
+RUN if [ ${HTTPS_MIRROR} = true ]; then \
+    sed -i "s/http:\/\//https:\/\//g" /etc/apk/repositories \
+;else \
+    sed -i "s/https:\/\//http:\/\//g" /etc/apk/repositories \
+;fi
 
 # update apk
 RUN apk update && apk upgrade
