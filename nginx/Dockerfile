@@ -2,14 +2,15 @@ FROM nginx:alpine
 
 LABEL maintainer="Luo Di <luodi0128@gmail.com> <https://github.com/lddsb>"
 
+# define variable
+ARG CUSTOMIZE_MIRROR
 # replace mirror
-ARG CUSTOMIZE_MIRROR=dl-cdn.alpinelinux.org
-ENV CUSTOMIZE_MIRROR ${CUSTOMIZE_MIRROR}
 RUN if [ ${CUSTOMIZE_MIRROR} ]; then \
     sed -i "s/dl-cdn.alpinelinux.org/${CUSTOMIZE_MIRROR}/g" /etc/apk/repositories \
     ;fi
-# mirror http scheme
+# define variable
 ARG HTTPS_MIRROR=false
+# mirror http scheme
 RUN if [ ${HTTPS_MIRROR} = true ]; then \
     sed -i "s/http:\/\//https:\/\//g" /etc/apk/repositories \
     ;else \
