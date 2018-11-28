@@ -47,6 +47,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
       SET_CONTAINER_TIMEZONE: "TRUE"
+
       CONTAINER_TIMEZONE: "Asia/Shanghai"
     networks:
       - webnet
@@ -68,6 +69,7 @@ services:
       args:
         CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
         HTTPS_MIRROR: ${HTTPS_MIRROR}
+    container_name: nodejs
     restart: always
     volumes:
       - webroot:/app

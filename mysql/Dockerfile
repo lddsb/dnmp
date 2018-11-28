@@ -1,6 +1,6 @@
 FROM mysql:5.7
 
-MAINTAINER Luo Di <luodi0128@gmail.com>
+LABEL maintainer="Luo Di <luodi0128@gmail.com> <https://github.com/lddsb>"
 
 # set timezone to China
 ENV TIMEZONE Asia/Shanghai
