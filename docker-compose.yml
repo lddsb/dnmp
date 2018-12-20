@@ -31,6 +31,9 @@ services:
     volumes:
       - webroot:/var/www/html/:rw
       - ./php7/logs:/var/log/php:rw
+      - ./php7/conf/php.ini:/usr/local/etc/php/php.ini
+      - ./php7/cron-jobs.conf:/var/spool/cron/crontabs/root
+      - ./php7/supervisor.d:/etc/supervisor.d
     extra_hosts:
       - ${PHP_FPM_EXTRA_HOSTS}
     networks:

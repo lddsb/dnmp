@@ -19,6 +19,12 @@ RUN if [ ${HTTPS_MIRROR} = true ]; then \
 # update apk
 RUN apk update && apk upgrade
 
+ARG INSTALL_COMPOSER=false
+# install php composer
+RUN if [ ${INSTALL_COMPOSER} = true ]; then \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
+    ;fi
+
 # install basic PHP extensions
 RUN docker-php-ext-install mbstring opcache pdo pdo_mysql mysqli
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
@@ -35,13 +41,18 @@ COPY ./conf/php.ini /usr/local/etc/php/php.ini
 RUN sed -i 's/;date.timezone =/date.timezone = Asia\/Shanghai/' /usr/local/etc/php/php.ini
 RUN apk add --no-cache tzdata
 RUN ln -snf /usr/share/zoneinfo/$TZ > /etc/localtime
-# install php composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 # user mod www-data
 RUN apk --no-cache add shadow && usermod -u 1000 www-data
 # web dir
 WORKDIR /var/www/html
 
-CMD ["php-fpm"]
+# add supervisor
+RUN apk add supervisor
+
+# add crond
+COPY ./entrypoint.sh /entrypoint.sh
+RUN mkdir -p /var/log/cron && chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 EXPOSE 9000

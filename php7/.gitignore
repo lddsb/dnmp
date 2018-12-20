@@ -6,3 +6,5 @@
 !composer.phar
 !logs
 !.env.example
+!cron-jobs.conf
+!entrypoint.sh
