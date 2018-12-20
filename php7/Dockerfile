@@ -24,6 +24,13 @@ ARG INSTALL_COMPOSER=false
 RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
     ;fi
+RUN apk add --no-cache $PHPIZE_DEPS openssl-dev
+
+ARG INSTALL_PHP_MONGODB=false
+RUN if [${INSTALL_PHP_MONGODB} = true]; then \
+    pecl install mongodb\
+    && docker-php-ext-enable mongodb \
+    ;fi
 
 # install basic PHP extensions
 RUN docker-php-ext-install mbstring opcache pdo pdo_mysql mysqli
