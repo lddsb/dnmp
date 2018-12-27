@@ -16,7 +16,8 @@ RUN if [ ${HTTPS_MIRROR} = true ]; then \
     ;else \
     sed -i "s/https:\/\//http:\/\//g" /etc/apk/repositories \
     ;fi
-
+# add openssl for support http2
+RUN apk update && apk --no-cache add openssl
 # add the configuration file into container
 ADD ./nginx.conf /etc/nginx/nginx.conf
 
