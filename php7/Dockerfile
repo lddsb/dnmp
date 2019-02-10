@@ -27,7 +27,7 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
 RUN apk add --no-cache $PHPIZE_DEPS openssl-dev
 
 ARG INSTALL_PHP_MONGODB=false
-RUN if [${INSTALL_PHP_MONGODB} = true]; then \
+RUN if [ ${INSTALL_PHP_MONGODB} = true ]; then \
     pecl install mongodb\
     && docker-php-ext-enable mongodb \
     ;fi
