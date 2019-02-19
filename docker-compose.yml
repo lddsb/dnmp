@@ -26,6 +26,8 @@ services:
       args:
         CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
         HTTPS_MIRROR: ${HTTPS_MIRROR}
+        INSTALL_COMPOSER: ${INSTALL_COMPOSER}
+        INSTALL_PHP_MONGODB: ${INSTALL_PHP_MONGODB}
     container_name: php7
     restart: always
     volumes:
