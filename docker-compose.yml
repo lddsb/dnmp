@@ -8,8 +8,8 @@ services:
         HTTPS_MIRROR: ${HTTPS_MIRROR}
     container_name: nginx
     ports:
-      - "${NGINX_HTTP_PORT}:80"
-      - "${NGINX_HTTPS_PORT}:443"
+      - '${NGINX_HTTP_PORT}:80'
+      - '${NGINX_HTTPS_PORT}:443'
     restart: always
     volumes:
       - webroot:/var/www/html
@@ -46,14 +46,14 @@ services:
     build:
       context: ./mysql
     ports:
-      - "${MYSQL_PORT}:3306"
+      - '${MYSQL_PORT}:3306'
     container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
-      SET_CONTAINER_TIMEZONE: "TRUE"
+      SET_CONTAINER_TIMEZONE: 'TRUE'
 
-      CONTAINER_TIMEZONE: "Asia/Shanghai"
+      CONTAINER_TIMEZONE: 'Asia/Shanghai'
     networks:
       - webnet
     volumes:
@@ -67,13 +67,13 @@ services:
     networks:
       - webnet
     ports:
-      - "${REDIS_PORT}:6379"
+      - '${REDIS_PORT}:6379'
   nodejs:
     build:
       context: ./nodejs
       args:
         CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
-        HTTPS_MIRROR: ${HTTPS_MIRROR}
+        NODE_GULP: ${NODE_GULP}
     container_name: nodejs
     restart: always
     volumes:

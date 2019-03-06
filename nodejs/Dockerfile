@@ -1,31 +1,13 @@
-FROM node:8-alpine
+FROM node:10-stretch
 
 LABEL maintainer="Luo Di <luodi0128@gmail.com> <https://github.com/lddsb>"
 
-# define variable
 ARG CUSTOMIZE_MIRROR
 # replace mirror
 RUN if [ ${CUSTOMIZE_MIRROR} ]; then \
-    sed -i "s/dl-cdn.alpinelinux.org/${CUSTOMIZE_MIRROR}/g" /etc/apk/repositories \
-    ;fi
-# define variable
-ARG HTTPS_MIRROR=false
-# mirror http scheme
-RUN if [ ${HTTPS_MIRROR} = true ]; then \
-    sed -i "s/http:\/\//https:\/\//g" /etc/apk/repositories \
-    ;else \
-    sed -i "s/https:\/\//http:\/\//g" /etc/apk/repositories \
+    sed -i 's/deb.debian.org/${CUSTOMIZE_MIRROR}/g' /etc/apt/sources.list \
     ;fi
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-# define variable
 ARG NODE_GULP=false
 # install gulp
 RUN if [ ${NODE_GULP} = true ]; then\
@@ -40,5 +22,8 @@ RUN if [ $NODE_SPECIAL_INSTALL ]; then \
     ${NODE_SPECIAL_INSTALL} \
     ;fi
 
+COPY server.js /server.js
+
 EXPOSE 8080
-CMD ["npm", "start"]
+WORKDIR /app
+CMD node /server.js
