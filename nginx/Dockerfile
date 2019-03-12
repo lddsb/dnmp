@@ -18,8 +18,6 @@ RUN if [ ${HTTPS_MIRROR} = true ]; then \
     ;fi
 # add openssl for support http2
 RUN apk update && apk --no-cache add openssl
-# add the configuration file into container
-ADD ./nginx.conf /etc/nginx/nginx.conf
 
 ARG PHP_UPSTREAM_CONTAINER_7=php7
 ARG PHP_UPSTREAM_PORT=9000

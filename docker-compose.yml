@@ -16,6 +16,7 @@ services:
       - ./nginx/configs/:/etc/nginx/configs/:ro
       - ./nginx/sites/:/etc/nginx/sites/:ro
       - ./nginx/logs/:/var/log/nginx/:rw
+      - ./nginx/nginx.conf/:/etc/nginx/nginx.conf
     networks:
       - webnet
     environment:
