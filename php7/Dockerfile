@@ -7,23 +7,17 @@ ARG CUSTOMIZE_MIRROR
 RUN if [ ${CUSTOMIZE_MIRROR} ]; then \
     sed -i "s/dl-cdn.alpinelinux.org/${CUSTOMIZE_MIRROR}/g" /etc/apk/repositories \
     ;fi
-# define variable
-ARG HTTPS_MIRROR=false
-# mirror http scheme
-RUN if [ ${HTTPS_MIRROR} = true ]; then \
-    sed -i "s/http:\/\//https:\/\//g" /etc/apk/repositories \
-    ;else \
-    sed -i "s/https:\/\//http:\/\//g" /etc/apk/repositories \
-    ;fi
 
 # update apk
-RUN apk update && apk upgrade
+RUN apk update
 
 ARG INSTALL_COMPOSER=false
 # install php composer
 RUN if [ ${INSTALL_COMPOSER} = true ]; then \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
+    apk add composer \
+    && composer config -g repo.packagist composer https://packagist.phpcomposer.com \
     ;fi
+
 RUN apk add --no-cache $PHPIZE_DEPS openssl-dev
 
 ARG INSTALL_PHP_MONGODB=false
@@ -49,7 +43,8 @@ RUN sed -i 's/;date.timezone =/date.timezone = Asia\/Shanghai/' /usr/local/etc/p
 RUN apk add --no-cache tzdata
 RUN ln -snf /usr/share/zoneinfo/$TZ > /etc/localtime
 # user mod www-data
-RUN apk --no-cache add shadow && usermod -u 1000 www-data
+RUN apk --no-cache add shadow \
+    && usermod -u 1000 -a -G root www-data
 # web dir
 WORKDIR /var/www/html
 
@@ -58,7 +53,8 @@ RUN apk add supervisor
 
 # add crond
 COPY ./entrypoint.sh /entrypoint.sh
-RUN mkdir -p /var/log/cron && chmod +x /entrypoint.sh
+RUN mkdir -p /var/log/cron \
+    && chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 

@@ -8,3 +8,4 @@
 !.env.example
 !cron-jobs.conf
 !entrypoint.sh
+!supervisor.d
