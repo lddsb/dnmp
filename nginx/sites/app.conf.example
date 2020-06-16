@@ -4,7 +4,7 @@ server {
     listen [::]:80;
 
     server_name app.dev;
-    root /var/www/html/app;
+    root /wwwroot/app;
     index index.php index.html index.htm;
     # if you use php with framework like laravel
     location / {

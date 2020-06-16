@@ -1,22 +1,24 @@
-version: '3.7'
+---
+version: "3.7"
 services:
   nginx:
     build:
       context: ./nginx
       args:
-        CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
-        HTTPS_MIRROR: ${HTTPS_MIRROR}
+        CUSTOMIZE_MIRROR:
     container_name: nginx
     ports:
-      - '${NGINX_HTTP_PORT}:80'
-      - '${NGINX_HTTPS_PORT}:443'
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
     restart: always
     volumes:
-      - webroot:/var/www/html
+      - webroot:/wwwroot
       - ./nginx/configs/:/etc/nginx/configs/:ro
       - ./nginx/sites/:/etc/nginx/sites/:ro
       - ./nginx/logs/:/var/log/nginx/:rw
       - ./nginx/nginx.conf/:/etc/nginx/nginx.conf
+    extra_hosts:
+      - ${PHP_FPM_EXTRA_HOSTS}
     networks:
       - webnet
     environment:
@@ -25,18 +27,23 @@ services:
     build:
       context: ./php7
       args:
-        CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
-        HTTPS_MIRROR: ${HTTPS_MIRROR}
-        INSTALL_COMPOSER: ${INSTALL_COMPOSER}
-        INSTALL_PHP_MONGODB: ${INSTALL_PHP_MONGODB}
+        CUSTOMIZE_MIRROR:
+        PHP_COMPOSER:
+        PHP_EXT_GD:
+        PHP_EXT_ZIP:
+        PHP_EXT_MYSQL:
+        PHP_EXT_MONGODB:
+        PHP_EXT_SWOOLE:
+        PHP_EXT_HPROSE:
+        PHP_EXT_REDIS:
     container_name: php7
     restart: always
     volumes:
-      - webroot:/var/www/html/:rw
+      - webroot:/wwwroot:rw
       - ./php7/logs:/var/log/php:rw
       - ./php7/conf/php.ini:/usr/local/etc/php/php.ini
-      - ./php7/cron-jobs.conf:/var/spool/cron/crontabs/root
-      - ./php7/supervisor.d:/etc/supervisor.d
+      - ./php7/cron.d:/etc/cron.d
+      - ./php7/supervisor.d:/etc/supervisor/conf.d
     extra_hosts:
       - ${PHP_FPM_EXTRA_HOSTS}
     networks:
@@ -47,19 +54,18 @@ services:
     build:
       context: ./mysql
     ports:
-      - '${MYSQL_PORT}:3306'
+      - "${MYSQL_PORT}:3306"
     container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
-      SET_CONTAINER_TIMEZONE: 'TRUE'
-
-      CONTAINER_TIMEZONE: 'Asia/Shanghai'
+      SET_CONTAINER_TIMEZONE: "TRUE"
+      CONTAINER_TIMEZONE: "Asia/Shanghai"
     networks:
       - webnet
     volumes:
       - ./mysql/conf/my.cnf:/etc/mysql/my.cnf:ro
-      - ${DATA_PATH}:/var/lib/mysql/:rw
+      - database:/var/lib/mysql/:rw
       - ./mysql/logs/:/var/log/mysql/:rw
   redis:
     image: redis:latest
@@ -68,17 +74,18 @@ services:
     networks:
       - webnet
     ports:
-      - '${REDIS_PORT}:6379'
+      - "${REDIS_PORT}:6379"
   nodejs:
     build:
       context: ./nodejs
       args:
-        CUSTOMIZE_MIRROR: ${CUSTOMIZE_MIRROR}
-        NODE_GULP: ${NODE_GULP}
+        CUSTOMIZE_MIRROR:
+        NODE_GULP:
     container_name: nodejs
     restart: always
     volumes:
       - webroot:/app
+
 networks:
   webnet:
 volumes:
@@ -88,3 +95,6 @@ volumes:
       type: none
       device: ${WEB_ROOT}
       o: bind
+  database:
+    external:
+      name: database_mysql

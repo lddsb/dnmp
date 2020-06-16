@@ -9,3 +9,4 @@
 !cron-jobs.conf
 !entrypoint.sh
 !supervisor.d
+!cron.d

@@ -8,24 +8,21 @@ ARG CUSTOMIZE_MIRROR
 RUN if [ ${CUSTOMIZE_MIRROR} ]; then \
     sed -i "s/dl-cdn.alpinelinux.org/${CUSTOMIZE_MIRROR}/g" /etc/apk/repositories \
     ;fi
-# define variable
-ARG HTTPS_MIRROR=false
-# mirror http scheme
-RUN if [ ${HTTPS_MIRROR} = true ]; then \
-    sed -i "s/http:\/\//https:\/\//g" /etc/apk/repositories \
-    ;else \
-    sed -i "s/https:\/\//http:\/\//g" /etc/apk/repositories \
-    ;fi
 # add openssl for support http2
 RUN apk update && apk --no-cache add openssl
 
 ARG PHP_UPSTREAM_CONTAINER_7=php7
 ARG PHP_UPSTREAM_PORT=9000
 
+RUN mkdir -p /scripts
+COPY adduser.sh /scripts
+
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache bash \
-    && adduser -D -H -u 1000 -s /bin/bash www-data
+    && sh /scripts/adduser.sh
+
+
 
 # Set upstream conf and remove the default conf
 RUN echo "upstream php7 { server ${PHP_UPSTREAM_CONTAINER_7}:${PHP_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf \
